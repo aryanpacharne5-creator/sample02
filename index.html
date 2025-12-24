@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Sneha Electrical</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Bootstrap -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- AOS -->
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+<!-- React -->
+<script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+<style>
+body.dark {
+    background:#121212;
+    color:#fff;
+}
+
+.hero {
+    min-height:70vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#f5f5f5;
+    border-bottom:5px solid #d60000;
+}
+body.dark .hero {
+    background:#000;
+}
+.hero img {
+    max-width:90%;
+    max-height:240px;
+    animation: float 3s ease-in-out infinite;
+}
+@keyframes float {
+    50%{transform:translateY(-10px);}
+}
+
+.toggle {
+    position:fixed;
+    top:15px;
+    right:15px;
+    z-index:999;
+}
+
+.card {
+    border-radius:14px;
+    cursor:pointer;
+}
+.card:active {
+    transform:scale(0.97);
+}
+</style>
+</head>
+
+<body>
+<div id="root"></div>
+
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+<script type="text/babel">
+
+const PRODUCTS = [
+  {
+    name: "Fire Hydrant System",
+    desc: "A network of pipes connected to water supply mains to provide adequate water pressure for firefighting operations."
+  },
+  {
+    name: "Fire Detection & Suppression System",
+    desc: "Detects fire at an early stage and automatically activates suppression systems to protect life and property."
+  },
+  {
+    name: "Fire Sprinkler System",
+    desc: "Automatic system that discharges water when heat is detected, controlling or extinguishing fires."
+  },
+  {
+    name: "Fire Pump House",
+    desc: "Pump installations designed as per NFPA standards to maintain water pressure during emergencies."
+  },
+  {
+    name: "Fire Control Panels",
+    desc: "Centralized control units that monitor and manage fire alarm and suppression systems."
+  },
+  {
+    name: "Annual Maintenance Contract (AMC)",
+    desc: "Scheduled preventive maintenance ensuring long-term reliability and safety compliance."
+  },
+  {
+    name: "Ring Main Unit (RMU)",
+    desc: "Compact medium-voltage distribution unit used for reliable power management."
+  },
+  {
+    name: "High Mast Erection",
+    desc: "Installation of high mast lighting systems for highways, industrial areas, and large campuses."
+  }
+];
+
+function App() {
+    const [dark,setDark] = React.useState(false);
+    const [selected,setSelected] = React.useState(null);
+
+    React.useEffect(()=>{
+        AOS.init({ once:true, duration:800 });
+        document.body.className = dark ? "dark" : "";
+    },[dark]);
+
+    return (
+    <>
+    {/* DARK MODE */}
+    <button className="btn btn-danger toggle" onClick={()=>setDark(!dark)}>
+        {dark ? "☀️" : "🌙"}
+    </button>
+
+    {/* HERO */}
+    <section className="hero">
+        <img src="logo.jpeg" alt="Logo"/>
+    </section>
+
+    {/* NAV */}
+    <nav className="navbar navbar-dark bg-dark navbar-expand-lg sticky-top">
+        <div className="container">
+            <span className="navbar-brand">Sneha Electrical</span>
+        </div>
+    </nav>
+
+    {/* PRODUCTS */}
+    <section id="products" className="container py-5">
+        <h2 className="text-danger text-center mb-4" data-aos="zoom-in">Our Products</h2>
+
+        <div className="row g-4">
+            {PRODUCTS.map((p,i)=>(
+                <div className="col-12 col-md-4" key={i} data-aos="fade-up">
+                    <div className="card shadow p-4 text-center"
+                        data-bs-toggle="modal"
+                        data-bs-target="#productModal"
+                        onClick={()=>setSelected(p)}>
+                        <h5>{p.name}</h5>
+                        <p className="text-muted">Tap to view details</p>
+                    </div>
+                </div>
+            ))}
+        </div>
+    </section>
+
+    {/* MODAL */}
+    <div className="modal fade" id="productModal" tabIndex="-1">
+      <div className="modal-dialog modal-dialog-centered">
+        <div className="modal-content">
+          <div className="modal-header">
+            <h5 className="modal-title">{selected?.name}</h5>
+            <button className="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div className="modal-body">
+            <p>{selected?.desc}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {/* CONTACT */}
+    <section className="bg-dark text-light text-center p-4">
+        <h4>Contact Us</h4>
+        <p>Pune, Maharashtra</p>
+    </section>
+
+    <footer className="bg-black text-secondary text-center p-2">
+        © 2025 Sneha Electrical
+    </footer>
+    </>
+    );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
