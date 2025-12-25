@@ -21,7 +21,6 @@ body.dark {
     background:#121212;
     color:#fff;
 }
-
 .hero {
     min-height:70vh;
     display:flex;
@@ -41,20 +40,23 @@ body.dark .hero {
 @keyframes float {
     50%{transform:translateY(-10px);}
 }
-
 .toggle {
     position:fixed;
     top:15px;
     right:15px;
     z-index:999;
 }
-
 .card {
     border-radius:14px;
     cursor:pointer;
 }
 .card:active {
     transform:scale(0.97);
+}
+.modal img {
+    width:100%;
+    border-radius:10px;
+    margin-bottom:15px;
 }
 </style>
 </head>
@@ -66,53 +68,33 @@ body.dark .hero {
 
 <script type="text/babel">
 
+function getImage(path){
+    if(!path) return "logo.jpeg";
+    return encodeURI(path);
+}
+
 const PRODUCTS = [
-  {
-    name: "Fire Hydrant System",
-    desc: "A network of pipes connected to water supply mains to provide adequate water pressure for firefighting operations."
-  },
-  {
-    name: "Fire Detection & Suppression System",
-    desc: "Detects fire at an early stage and automatically activates suppression systems to protect life and property."
-  },
-  {
-    name: "Fire Sprinkler System",
-    desc: "Automatic system that discharges water when heat is detected, controlling or extinguishing fires."
-  },
-  {
-    name: "Fire Pump House",
-    desc: "Pump installations designed as per NFPA standards to maintain water pressure during emergencies."
-  },
-  {
-    name: "Fire Control Panels",
-    desc: "Centralized control units that monitor and manage fire alarm and suppression systems."
-  },
-  {
-    name: "Annual Maintenance Contract (AMC)",
-    desc: "Scheduled preventive maintenance ensuring long-term reliability and safety compliance."
-  },
-  {
-    name: "Ring Main Unit (RMU)",
-    desc: "Compact medium-voltage distribution unit used for reliable power management."
-  },
-  {
-    name: "High Mast Erection",
-    desc: "Installation of high mast lighting systems for highways, industrial areas, and large campuses."
-  }
+  { name:"Fire Hydrant System", image:"images/fire_hydrant_system.webp", desc:"Water distribution network for firefighting." },
+  { name:"Fire Detection & Suppression", image:"images/fire-detection.webp", desc:"Early fire detection with automatic suppression." },
+  { name:"Fire Sprinkler System", image:"images/sprinkler.webp", desc:"Heat activated automatic sprinkler system." },
+  { name:"Fire Pump House", image:"images/fire pump house.jpg", desc:"NFPA compliant fire pump installations." },
+  { name:"Fire Control Panels", image:"images/fire-control-panels.webp", desc:"Centralized fire alarm and control systems." },
+  { name:"Annual Maintenance Contract", image:"images/amc.webp", desc:"Preventive maintenance for long-term safety." },
+  { name:"Ring Main Unit (RMU)", image:"images/rmu.jpg", desc:"Medium voltage power distribution unit." },
+  { name:"High Mast Erection", image:"images/high-mast.webp", desc:"High mast lighting for large areas." }
 ];
 
-function App() {
+function App(){
     const [dark,setDark] = React.useState(false);
     const [selected,setSelected] = React.useState(null);
 
     React.useEffect(()=>{
-        AOS.init({ once:true, duration:800 });
+        AOS.init({once:true,duration:800});
         document.body.className = dark ? "dark" : "";
     },[dark]);
 
     return (
     <>
-    {/* DARK MODE */}
     <button className="btn btn-danger toggle" onClick={()=>setDark(!dark)}>
         {dark ? "☀️" : "🌙"}
     </button>
@@ -122,55 +104,102 @@ function App() {
         <img src="logo.jpeg" alt="Logo"/>
     </section>
 
-    {/* NAV */}
-    <nav className="navbar navbar-dark bg-dark navbar-expand-lg sticky-top">
-        <div className="container">
-            <span className="navbar-brand">Sneha Electrical</span>
+    {/* NAVBAR */}
+    <nav className="navbar navbar-dark bg-dark sticky-top">
+      <div className="container">
+        <span className="navbar-brand">Sneha Electrical</span>
+        <div>
+          <a className="nav-link d-inline text-white mx-2" href="#about">About</a>
+          <a className="nav-link d-inline text-white mx-2" href="#whyus">Why Us</a>
+          <a className="nav-link d-inline text-white mx-2" href="#history">History</a>
+          <a className="nav-link d-inline text-white mx-2" href="#partners">Partners</a>
+          <a className="nav-link d-inline text-white mx-2" href="#products">Products</a>
         </div>
+      </div>
     </nav>
+
+    {/* ABOUT */}
+    <section id="about" className="container py-5" data-aos="fade-up">
+        <h2 className="text-danger text-center">About Us</h2>
+        <p className="text-center">
+            Sneha Electrical Corporation & Co., established in 2007 at Pune,
+            is a registered Electrical & Fire Contractor providing reliable
+            fire protection and electrical solutions.
+        </p>
+    </section>
+
+    {/* WHY US */}
+    <section id="whyus" className="container py-5">
+        <h2 className="text-danger text-center mb-4" data-aos="zoom-in">Why Choose Us</h2>
+        <div className="row g-4">
+        {["Experience Since 2007","Certified Contractors","Quality Assurance",
+          "Skilled Workforce","Timely Delivery","After Sales Support"].map((w,i)=>(
+            <div className="col-md-4" key={i} data-aos="fade-up">
+                <div className="card p-4 text-center shadow h-100">{w}</div>
+            </div>
+        ))}
+        </div>
+    </section>
+
+    {/* HISTORY */}
+    <section id="history" className="container py-5" data-aos="fade-right">
+        <h2 className="text-danger text-center">Company History & Background</h2>
+        <p className="text-center">
+            The company started as a small contracting firm and grew steadily
+            through quality workmanship, safety compliance, and customer trust.
+        </p>
+    </section>
+
+    {/* PARTNERS */}
+    <section id="partners" className="container py-5" data-aos="fade-left">
+        <h2 className="text-danger text-center mb-4">Growth Partners</h2>
+        <div className="row g-4 text-center">
+        {["Industrial Units","Commercial Projects","Infrastructure Developers",
+          "Government Contractors","Consultants","Fire Auditors"].map((p,i)=>(
+            <div className="col-6 col-md-4" key={i}>
+                <div className="card p-3 shadow h-100">{p}</div>
+            </div>
+        ))}
+        </div>
+    </section>
 
     {/* PRODUCTS */}
     <section id="products" className="container py-5">
         <h2 className="text-danger text-center mb-4" data-aos="zoom-in">Our Products</h2>
-
         <div className="row g-4">
-            {PRODUCTS.map((p,i)=>(
-                <div className="col-12 col-md-4" key={i} data-aos="fade-up">
-                    <div className="card shadow p-4 text-center"
-                        data-bs-toggle="modal"
-                        data-bs-target="#productModal"
-                        onClick={()=>setSelected(p)}>
-                        <h5>{p.name}</h5>
-                        <p className="text-muted">Tap to view details</p>
-                    </div>
+        {PRODUCTS.map((p,i)=>(
+            <div className="col-md-4" key={i} data-aos="fade-up">
+                <div className="card p-4 shadow text-center"
+                     data-bs-toggle="modal"
+                     data-bs-target="#productModal"
+                     onClick={()=>setSelected(p)}>
+                    <h5>{p.name}</h5>
+                    <p className="text-muted">Tap to view details</p>
                 </div>
-            ))}
+            </div>
+        ))}
         </div>
     </section>
 
     {/* MODAL */}
     <div className="modal fade" id="productModal" tabIndex="-1">
-      <div className="modal-dialog modal-dialog-centered">
+      <div className="modal-dialog modal-dialog-centered modal-lg">
         <div className="modal-content">
           <div className="modal-header">
             <h5 className="modal-title">{selected?.name}</h5>
             <button className="btn-close" data-bs-dismiss="modal"></button>
           </div>
           <div className="modal-body">
+            <img src={getImage(selected?.image)} onError={(e)=>e.target.src="logo.jpeg"} />
             <p>{selected?.desc}</p>
           </div>
         </div>
       </div>
     </div>
 
-    {/* CONTACT */}
-    <section className="bg-dark text-light text-center p-4">
-        <h4>Contact Us</h4>
-        <p>Pune, Maharashtra</p>
-    </section>
-
-    <footer className="bg-black text-secondary text-center p-2">
-        © 2025 Sneha Electrical
+    {/* FOOTER */}
+    <footer className="bg-dark text-light text-center p-3">
+        © 2025 Sneha Electrical Corporation & Co.
     </footer>
     </>
     );
