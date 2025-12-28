@@ -86,6 +86,13 @@ const PRODUCTS = [
   { name:"High Mast Erection", image:"images/high-mast.webp", desc:"High mast lighting for large areas." }
 ];
 
+{/* email validation */}
+function validateEmail(email) {
+  const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9-]+(\.[a-zA-Z]{2,})+$/;
+  return regex.test(email);
+}
+
+
 function App(){
     const [dark,setDark] = React.useState(false);
     const [selected,setSelected] = React.useState(null);
@@ -207,10 +214,21 @@ function App(){
                 <h5 className="mb-3">Send Us a Message</h5>
 
                 <form
-                    action="https://docs.google.com/forms/d/e/1FAIpQLSdBrU96Rqw0oGvIzPjDDraPXJbaTarhDukzEORDUMLckOmmYg/formResponse"
-                    method="POST"
-                    target="_blank"
-                    >
+                  action="https://docs.google.com/forms/d/e/1FAIpQLSdBrU96Rqw0oGvIzPjDDraPXJbaTarhDukzEORDUMLckOmmYg/formResponse"
+                  method="POST"
+                  target="_blank"
+                  onSubmit={(e) => {
+                    const email = e.target.querySelector(
+                      'input[name="entry.1487688566"]'
+                    ).value;
+
+                    if (!validateEmail(email)) {
+                      e.preventDefault();
+                      alert("Please enter a valid email address (example: name@gmail.com)");
+                    }
+                  }}
+                >
+
 
                     {/* NAME */}
                     <div className="mb-3">
@@ -239,14 +257,13 @@ function App(){
                     {/* EMAIL */}
                     <div className="mb-3">
                         <input
-                        type="email"
-                        name="entry.1487688566"
-                        className="form-control"
-                        placeholder="Your Email"
-                        pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
-                        title="Please enter a valid email address"
-                        required
+                          type="text"
+                          name="entry.1487688566"
+                          className="form-control"
+                          placeholder="Your Email Address"
+                          required
                         />
+
                     </div>
 
                     {/* MESSAGE */}
