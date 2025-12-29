@@ -92,45 +92,48 @@ function validateEmail(email) {
   return regex.test(email);
 }
 
-function handleSubmit(e) {
-  e.preventDefault(); // stop reload & redirect
-
-  const form = e.target;
-  const email = form.email.value;
-
-  if (!validateEmail(email)) {
-    alert("Please enter a valid email address (example: name@gmail.com)");
-    return;
-  }
-
-  const data = new FormData();
-  data.append("entry.696230582", form.name.value);
-  data.append("entry.1597044561", form.phone.value);
-  data.append("entry.1487688566", form.email.value);
-  data.append("entry.293572896", form.message.value);
-
-  fetch(
-    "https://docs.google.com/forms/d/e/1FAIpQLSdBrU96Rqw0oGvIzPjDDraPXJbaTarhDukzEORDUMLckOmmYg/formResponse",
-    {
-      method: "POST",
-      mode: "no-cors",
-      body: data,
-    }
-  );
-
-  alert("Thank you! Your message has been submitted.");
-  form.reset();
-}
 
 
 function App(){
     const [dark,setDark] = React.useState(false);
     const [selected,setSelected] = React.useState(null);
+    const [successMsg, setSuccessMsg] = React.useState("");
+
 
     React.useEffect(()=>{
         AOS.init({once:true,duration:800});
         document.body.className = dark ? "dark" : "";
     },[dark]);
+
+    function handleSubmit(e) {
+        e.preventDefault();
+
+        const form = e.target;
+        const email = form.email.value;
+
+        if (!validateEmail(email)) {
+            setSuccessMsg("Please enter a valid email address.");
+            return;
+        }
+
+        const data = new FormData();
+        data.append("entry.696230582", form.name.value);
+        data.append("entry.1597044561", form.phone.value);
+        data.append("entry.1487688566", form.email.value);
+        data.append("entry.293572896", form.message.value);
+
+        fetch(
+            "https://docs.google.com/forms/d/e/1FAIpQLSdBrU96Rqw0oGvIzPjDDraPXJbaTarhDukzEORDUMLckOmmYg/formResponse",
+            {
+                method: "POST",
+                mode: "no-cors",
+                body: data,
+            }
+        );
+
+        setSuccessMsg("Thank you! Your message has been submitted successfully.");
+        form.reset();
+    }
 
     return (
     <>
@@ -296,10 +299,11 @@ function App(){
 
                 </form>
 
-
-
-
-
+                {successMsg && (
+                    <div className="alert alert-success mt-3 text-center">
+                        {successMsg}
+                    </div>
+                )}
 
             </div>
         </div>
